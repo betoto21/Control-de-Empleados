@@ -12,7 +12,8 @@ public class Test {
 
     public static void main(String[] args) {
         Conexion con = new Conexion();
-        con.deleteEmpleados(17340);
+        con.addCheckOut(13194);
+//        con.updateEmpleados(16506, "dasdasd", "dasdasds", "si");
         String[] arr = con.getEmpleados();
         String[] arr2 = con.getCheck();
         Gson g = new Gson();
