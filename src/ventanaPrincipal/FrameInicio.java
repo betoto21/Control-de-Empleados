@@ -1,24 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package ventanaPrincipal;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+import ventanaPrincipal.ventanasEmpleados.*;
 
 /**
  *
- * @author betoto21
+ * @author Daniel Felix
  */
 public class FrameInicio extends javax.swing.JFrame {
 
     /**
      * Creates new form FrameInicio
      */
-    Color initMenu = new Color(51,102,255);
-    Color hoverMenu = new Color(51,168,255);
-    int x,y;
+    Color initMenu = new Color(51, 102, 255);
+    Color hoverMenu = new Color(51, 168, 255);
+    int x, y;
+
     public FrameInicio() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -99,6 +98,8 @@ public class FrameInicio extends javax.swing.JFrame {
         );
 
         backGround.add(paneMove, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 0, 1010, 40));
+
+        paneContent.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout paneContentLayout = new javax.swing.GroupLayout(paneContent);
         paneContent.setLayout(paneContentLayout);
@@ -447,15 +448,15 @@ public class FrameInicio extends javax.swing.JFrame {
         labelExit.setBackground(Color.red);
         panelExit.setBackground(Color.red);
         labelExit.setForeground(Color.white);
-        
+
     }//GEN-LAST:event_labelExitMouseEntered
 
     private void paneMoveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paneMoveMouseClicked
-        
+
     }//GEN-LAST:event_paneMoveMouseClicked
 
     private void panelExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelExitMouseClicked
-        
+
     }//GEN-LAST:event_panelExitMouseClicked
 
     private void labelExitMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelExitMouseExited
@@ -473,7 +474,13 @@ public class FrameInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_labelAddMouseEntered
 
     private void labelAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelAddMouseClicked
-        // TODO add your handling code here:
+        PaneAdd addContent = new PaneAdd();
+        addContent.setSize(paneContent.getWidth(), paneContent.getHeight());
+        addContent.setLocation(0, 0);
+        paneContent.removeAll();
+        paneContent.add(addContent, BorderLayout.CENTER);
+        paneContent.revalidate();
+        paneContent.repaint();
     }//GEN-LAST:event_labelAddMouseClicked
 
     private void labelSearchMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelSearchMouseExited
@@ -485,7 +492,13 @@ public class FrameInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_labelSearchMouseEntered
 
     private void labelSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelSearchMouseClicked
-        // TODO add your handling code here:
+        PaneCheck paneChecks = new PaneCheck();
+        paneChecks.setSize(paneContent.getWidth(), paneContent.getHeight());
+        paneChecks.setLocation(0, 0);
+        paneContent.removeAll();
+        paneContent.add(paneChecks,BorderLayout.CENTER);
+        paneContent.revalidate();
+        paneContent.repaint();
     }//GEN-LAST:event_labelSearchMouseClicked
 
     private void labelInicioMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelInicioMouseExited
@@ -497,7 +510,13 @@ public class FrameInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_labelInicioMouseEntered
 
     private void labelUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelUpdateMouseClicked
-        // TODO add your handling code here:
+        PaneUpdateID update = new PaneUpdateID();
+        update.setSize(paneContent.getWidth(), paneContent.getHeight());
+        update.setLocation(0, 0);
+        paneContent.removeAll();
+        paneContent.add(update,BorderLayout.CENTER);
+        paneContent.revalidate();;
+        paneContent.repaint();
     }//GEN-LAST:event_labelUpdateMouseClicked
 
     private void labelUpdateMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelUpdateMouseEntered
@@ -509,7 +528,13 @@ public class FrameInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_labelUpdateMouseExited
 
     private void labelDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelDeleteMouseClicked
-        // TODO add your handling code here:
+        PaneDelete delete = new PaneDelete();
+        delete.setSize(paneContent.getWidth(), paneContent.getHeight());
+        delete.setLocation(0, 0);
+        paneContent.removeAll();
+        paneContent.add(delete,BorderLayout.CENTER);
+        paneContent.revalidate();;
+        paneContent.repaint();
     }//GEN-LAST:event_labelDeleteMouseClicked
 
     private void labelDeleteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelDeleteMouseEntered
@@ -521,7 +546,13 @@ public class FrameInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_labelDeleteMouseExited
 
     private void labelShowMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelShowMouseClicked
-        // TODO add your handling code here:
+        PaneShow showContent = new PaneShow();
+        showContent.setSize(paneContent.getWidth(), paneContent.getHeight());
+        showContent.setLocation(0, 0);
+        paneContent.removeAll();
+        paneContent.add(showContent, BorderLayout.CENTER);
+        paneContent.revalidate();
+        paneContent.repaint();
     }//GEN-LAST:event_labelShowMouseClicked
 
     private void labelShowMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelShowMouseEntered

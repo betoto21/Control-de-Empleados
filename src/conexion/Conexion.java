@@ -65,6 +65,7 @@ public class Conexion {
         document.put("Puesto", puesto);
         document.put("Foto", foto);
         coleccionEmpleados.insert(document);
+        JOptionPane.showMessageDialog(null, "se agrego correctamente");
     }
 
     public void updateEmpleados(int id, String nombre, String puesto, String foto) {
@@ -79,12 +80,14 @@ public class Conexion {
 
         filtro.append("Id", id);
         coleccionEmpleados.updateMulti(filtro, update);
+        JOptionPane.showMessageDialog(null, "se edito correctamente");
     }
 
     public void deleteEmpleados(int id) {
         BasicDBObject document = new BasicDBObject();
         document.append("Id", id);
         coleccionEmpleados.remove(document);
+        JOptionPane.showMessageDialog(null, "se elimino correctamente");
     }
 
     public String[] getCheck() {
@@ -114,19 +117,28 @@ public class Conexion {
         document.put("Entrada", getFecha());
         document.put("Salida", " ");
         coleccionChecks.insert(document);
+        JOptionPane.showMessageDialog(null, "Listo check-in generado");
 
     }
     
-    public void addCheckOut(int idCheck){
+    public void addCheckOut(int idempleado){
         BasicDBObject newDatos = new BasicDBObject();
         BasicDBObject filtro = new BasicDBObject();
         BasicDBObject update = new BasicDBObject();
-        
+        int idCheck = 0;
         newDatos.append("Salida", getFecha());
         update.append("$set", newDatos);
-        
+        String[] datos = getCheck();
+        for(String x : datos){
+            Gson g = new Gson();
+            Checks ch = g.fromJson(x, Checks.class);
+            if (ch.IdEmpleado == idempleado && ch.Salida.equalsIgnoreCase(" ")) {
+                idCheck = ch.IdCheck;
+            }
+        }
         filtro.append("IdCheck", idCheck);
         coleccionChecks.updateMulti(filtro,update);
+        JOptionPane.showMessageDialog(null, "Listo check-out generado");
     }
     
     public String getFecha(){
