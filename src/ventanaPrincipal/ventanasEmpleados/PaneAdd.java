@@ -2,6 +2,15 @@ package ventanaPrincipal.ventanasEmpleados;
 
 import conexion.Conexion;
 import java.awt.Color;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.nio.file.Files;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -11,11 +20,18 @@ public class PaneAdd extends javax.swing.JPanel {
    
     Color init = new Color(0,204,255);
     Color hover = new Color(51,102,255);
-    
+    String cad = "";
+    JFileChooser chooser = new JFileChooser();
     public PaneAdd() {
         initComponents();
     }
-
+    
+    private void restablecer(){
+        txtName.setText("");
+        txtJob.setText("");
+        labelIcon.setIcon(null);
+        labelIcon.setText("     Sin Imagen");
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -57,8 +73,7 @@ public class PaneAdd extends javax.swing.JPanel {
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Nombre:");
 
-        txtJob.setForeground(new java.awt.Color(0, 0, 0));
-        txtJob.setCaretColor(new java.awt.Color(255, 255, 255));
+        txtJob.setCaretColor(new java.awt.Color(0, 0, 0));
         txtJob.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtJobActionPerformed(evt);
@@ -69,8 +84,6 @@ public class PaneAdd extends javax.swing.JPanel {
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Puesto:");
 
-        txtName.setForeground(new java.awt.Color(0, 0, 0));
-        txtName.setCaretColor(new java.awt.Color(255, 255, 255));
         txtName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNameActionPerformed(evt);
@@ -83,7 +96,7 @@ public class PaneAdd extends javax.swing.JPanel {
         labelSelect.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
         labelSelect.setForeground(new java.awt.Color(0, 0, 0));
         labelSelect.setText(" Seleccionar Imagen");
-        labelSelect.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        labelSelect.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         labelSelect.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 labelSelectMouseClicked(evt);
@@ -113,7 +126,7 @@ public class PaneAdd extends javax.swing.JPanel {
         labelAdd.setForeground(new java.awt.Color(0, 0, 0));
         labelAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add_icon.png"))); // NOI18N
         labelAdd.setText("Agregar");
-        labelAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        labelAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         labelAdd.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 labelAddMouseClicked(evt);
@@ -186,7 +199,7 @@ public class PaneAdd extends javax.swing.JPanel {
                 .addComponent(paneSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(144, 144, 144)
                 .addComponent(paneAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(84, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(26, 26, 26)
@@ -204,7 +217,17 @@ public class PaneAdd extends javax.swing.JPanel {
     }//GEN-LAST:event_txtNameActionPerformed
 
     private void labelSelectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelSelectMouseClicked
-        // TODO add your handling code here:
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("JPG PNG GIF Images", "jpg", "jpeg", "png", "gif");
+        chooser.setFileFilter(filtro);
+        int result = chooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            cad = chooser.getCurrentDirectory() + "/" + chooser.getSelectedFile().getName();
+            ImageIcon icon = new ImageIcon(cad);
+            Image img = icon.getImage();
+            Image imgscale = img.getScaledInstance(labelIcon.getWidth(), labelIcon.getHeight(), Image.SCALE_SMOOTH);
+            ImageIcon scaledimage = new ImageIcon(imgscale);
+            labelIcon.setIcon(scaledimage);
+        }
     }//GEN-LAST:event_labelSelectMouseClicked
 
     private void labelSelectMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelSelectMouseEntered
@@ -218,9 +241,24 @@ public class PaneAdd extends javax.swing.JPanel {
     private void labelAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelAddMouseClicked
         String nombre = txtName.getText();
         String puesto = txtJob.getText();
-        String imagen = " ";
+        
         Conexion con = new Conexion();
+        String dir = "imagenes";
+        File directory = new File(dir);
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+        File src = new File(cad);
+        File destino = new File(dir + "/" + txtName.getText()+".jpg");
+        String imagen = destino.getPath();
+        try {
+            Files.copy(src.toPath(), destino.toPath());
+            
+        } catch (IOException ex) {
+           ex.printStackTrace();
+        }
         con.addEmpleados(nombre, puesto, imagen);
+        restablecer();
     }//GEN-LAST:event_labelAddMouseClicked
 
     private void labelAddMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelAddMouseEntered

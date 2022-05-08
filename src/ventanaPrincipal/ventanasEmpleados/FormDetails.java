@@ -4,6 +4,9 @@ import com.google.gson.Gson;
 import conexion.Checks;
 import conexion.Conexion;
 import conexion.Empleados;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -15,41 +18,52 @@ public class FormDetails extends javax.swing.JFrame {
     /**
      * Creates new form formDetails
      */
-    public FormDetails(){}
+    public FormDetails() {
+    }
+
     public FormDetails(int id) {
         initComponents();
         showTable(id);
         fillLabels(id);
         this.setLocationRelativeTo(null);
     }
-    
-    private void fillLabels(int id){
+
+    private void fillLabels(int id) {
         Conexion con = new Conexion();
         String[] datos = con.getEmpleados();
-        for(String dat : datos){
+        for (String dat : datos) {
             Gson g = new Gson();
             Empleados em = g.fromJson(dat, Empleados.class);
-            if(id == em.Id){
+            if (id == em.Id) {
                 labelId.setText(String.valueOf(em.Id));
                 labelNombre.setText(em.Nombre);
                 labelPuesto.setText(em.Puesto);
+                JFileChooser chooser = new JFileChooser();
+                String cad = em.Foto;
+                System.out.println(cad);
+                ImageIcon icon = new ImageIcon(cad);
+                Image img = icon.getImage();
+                Image imgscale = img.getScaledInstance(labelIcon.getWidth(), labelIcon.getHeight(), Image.SCALE_SMOOTH);
+                ImageIcon scaledimage = new ImageIcon(imgscale);
+                labelIcon.setIcon(scaledimage);
             }
         }
     }
 
-    private void showTable(int id){
+    private void showTable(int id) {
         DefaultTableModel model = (DefaultTableModel) tblChecks.getModel();
         model.setRowCount(0);
         Conexion con = new Conexion();
         String[] content = con.getCheck();
         Gson g = new Gson();
-        for(String pos : content){
+        for (String pos : content) {
             Checks check = g.fromJson(pos, Checks.class);
-            if(check.IdEmpleado == id){
-                model.addRow(new Object[]{check.Entrada,check.Salida});
+            if (check.IdEmpleado == id) {
+                model.addRow(new Object[]{check.Entrada, check.Salida});
             }
         }
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -67,6 +81,7 @@ public class FormDetails extends javax.swing.JFrame {
         tblChecks = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         paneBackGround.setBackground(new java.awt.Color(255, 255, 255));
 

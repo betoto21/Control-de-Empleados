@@ -101,47 +101,55 @@ public class Conexion {
     }
 
     public void addCheckIn(int idEmpleado) {
-        BasicDBObject document = new BasicDBObject();
-        int id = 0;
-        String[] arr = getCheck();
-        for(String x : arr){
-            Gson g = new Gson();
-            Checks ch = g.fromJson(x, Checks.class);
-            int idno = ch.IdCheck;
-            do{
-                id = genId();
-            }while(id == ch.IdCheck);
+        try {
+            BasicDBObject document = new BasicDBObject();
+            int id = 0;
+            String[] arr = getCheck();
+            for (String x : arr) {
+                Gson g = new Gson();
+                Checks ch = g.fromJson(x, Checks.class);
+                int idno = ch.IdCheck;
+                do {
+                    id = genId();
+                } while (id == ch.IdCheck);
+            }
+            document.put("IdCheck", id);
+            document.put("IdEmpleado", idEmpleado);
+            document.put("Entrada", getFecha());
+            document.put("Salida", " ");
+            coleccionChecks.insert(document);
+            JOptionPane.showMessageDialog(null, "Listo check-in generado");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "ID esta vacio o es incorrecto");
         }
-        document.put("IdCheck", id);
-        document.put("IdEmpleado", idEmpleado);
-        document.put("Entrada", getFecha());
-        document.put("Salida", " ");
-        coleccionChecks.insert(document);
-        JOptionPane.showMessageDialog(null, "Listo check-in generado");
 
     }
-    
-    public void addCheckOut(int idempleado){
-        BasicDBObject newDatos = new BasicDBObject();
-        BasicDBObject filtro = new BasicDBObject();
-        BasicDBObject update = new BasicDBObject();
-        int idCheck = 0;
-        newDatos.append("Salida", getFecha());
-        update.append("$set", newDatos);
-        String[] datos = getCheck();
-        for(String x : datos){
-            Gson g = new Gson();
-            Checks ch = g.fromJson(x, Checks.class);
-            if (ch.IdEmpleado == idempleado && ch.Salida.equalsIgnoreCase(" ")) {
-                idCheck = ch.IdCheck;
+
+    public void addCheckOut(int idempleado) {
+        try {
+            BasicDBObject newDatos = new BasicDBObject();
+            BasicDBObject filtro = new BasicDBObject();
+            BasicDBObject update = new BasicDBObject();
+            int idCheck = 0;
+            newDatos.append("Salida", getFecha());
+            update.append("$set", newDatos);
+            String[] datos = getCheck();
+            for (String x : datos) {
+                Gson g = new Gson();
+                Checks ch = g.fromJson(x, Checks.class);
+                if (ch.IdEmpleado == idempleado && ch.Salida.equalsIgnoreCase(" ")) {
+                    idCheck = ch.IdCheck;
+                }
             }
+            filtro.append("IdCheck", idCheck);
+            coleccionChecks.updateMulti(filtro, update);
+            JOptionPane.showMessageDialog(null, "Listo check-out generado");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "ID esta vacio o es incorrecto");
         }
-        filtro.append("IdCheck", idCheck);
-        coleccionChecks.updateMulti(filtro,update);
-        JOptionPane.showMessageDialog(null, "Listo check-out generado");
     }
-    
-    public String getFecha(){
+
+    public String getFecha() {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("yy/MM/dd HH:mm:ss");
         String fecha = formato.format(LocalDateTime.now());
         return fecha;
